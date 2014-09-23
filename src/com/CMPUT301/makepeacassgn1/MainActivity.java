@@ -6,8 +6,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import android.support.v7.app.ActionBarActivity;
 import android.content.Context;
@@ -31,6 +36,7 @@ public class MainActivity extends ActionBarActivity {
 	List<ToDoItem> CurrentToDos = new ArrayList<ToDoItem>();
 	ArrayAdapter<ToDoList> listAdapter;
 	ListView ToDoListView;
+	ArrayAdapter<ToDoItem> adapter;
 	//CheckedTextView CheckItem;
 	private static final String FILENAME = "file.sav";
 
@@ -46,14 +52,14 @@ public class MainActivity extends ActionBarActivity {
         
 //        final CheckedTextView CheckItem = (CheckedTextView)findViewById(R.id.CheckedView);
 //        CheckItem.setOnClickListener(new View.OnClickListener(){
-//        	@Override
-//        	public void onClick(View v){
-//        		if(CheckItem.isChecked()){
-//        			CheckItem.setChecked(false);
-//        		} else {
-//        			CheckItem.setChecked(true);
-//        		}
-//        	}
+//
+////        	public void onClick(View v){
+////        		if(CheckItem.isChecked()){
+////        			CheckItem.setChecked(false);
+////        		} else {
+////        			CheckItem.setChecked(true);
+////        		}
+////        	}
 //        });
         
         Add.setOnClickListener(new View.OnClickListener() {
@@ -63,10 +69,10 @@ public class MainActivity extends ActionBarActivity {
 		    	setResult(RESULT_OK);
 		    	String item = ItemAdder.getText().toString();;
 		    	ToDoItem now = new ToDoItem(item);
-		    	saveInFile(item);
 		    	CurrentToDos.add(now);
 		    	ItemAdder.setText("");
-		    	updateData();
+		    	saveInFile();
+		    	adapter.notifyDataSetChanged();
 			}
 		});
         
@@ -87,20 +93,15 @@ public class MainActivity extends ActionBarActivity {
         
         
     }
-    	
-    	
-    
-//    protected void onClose(){
-//    	
-//    }
 
     @Override
     protected void onStart(){
     	//TODO Auto-generated method stub
     	super.onStart();
     	ToDoListView = (ListView)findViewById(R.id.ToDoListView);
-    	ToDos = loadFromFile();
-    	ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.blandlayout, ToDos);
+    	if (CurrentToDos != null)
+        	loadFromFile();
+    	adapter = new ArrayAdapter<ToDoItem>(this,R.layout.blandlayout, CurrentToDos);
     	ToDoListView.setAdapter(adapter);
     }
 
@@ -113,17 +114,15 @@ public class MainActivity extends ActionBarActivity {
         return true;
     }
     
-    private String[] loadFromFile(){
-    	ArrayList<String> ToDos = new ArrayList<String>();
+    private void loadFromFile(){
 		try {
 			FileInputStream fis = openFileInput(FILENAME);
 			BufferedReader in = new BufferedReader(new InputStreamReader(fis));
-			String line = in.readLine();
-			while (line != null) {
-				ToDos.add(line);
-				line = in.readLine();
-			}
-
+			//learned in Lab 3 09/23/14
+			Gson gson = new Gson();
+			Type listType = new TypeToken<ArrayList<ToDoItem>>(){}.getType();
+			CurrentToDos = gson.fromJson(in, listType);
+			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -131,19 +130,17 @@ public class MainActivity extends ActionBarActivity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return ToDos.toArray(new String[ToDos.size()]);
 	}
     
     
-    private void saveInFile(String name) {
+    private void saveInFile() {
 		try {
-			FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_APPEND);
-//			for (t i=0;i<CurrentToDos.size();i++){
-//				String name = CurrentToDos.get(i).GetName();
-			fos.write(new String(name+"\n").getBytes());
-			//}
-			fos.close();
-			
+			FileOutputStream fos = openFileOutput(FILENAME,0);
+			Gson gson = new Gson();
+			OutputStreamWriter osw = new OutputStreamWriter(fos);
+			gson.toJson(CurrentToDos,osw);
+			osw.flush();
+			fos.close();	
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -169,8 +166,8 @@ public class MainActivity extends ActionBarActivity {
 	  //TODO Auto-generated method stub
 		super.onStart();
 		ToDoListView = (ListView)findViewById(R.id.ToDoListView);
-		ToDos = loadFromFile();
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.blandlayout, ToDos);
+		loadFromFile();
+		ArrayAdapter<ToDoItem> adapter = new ArrayAdapter<ToDoItem>(this,R.layout.blandlayout, CurrentToDos);
 		ToDoListView.setAdapter(adapter);
     	
     }

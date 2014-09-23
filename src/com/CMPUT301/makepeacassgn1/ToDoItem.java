@@ -7,6 +7,7 @@ public class ToDoItem extends ToDoList {
 	private Boolean Checked = false;//initialized to an unchecked state
 	
 	public ToDoItem(String name){
+		super();
 		ItemName = name;
 		Archive = false;
 	}
@@ -24,5 +25,9 @@ public class ToDoItem extends ToDoList {
 	}
 	public void setChecked(boolean Checked) {  
 	      this.Checked = Checked;  
+	}
+	@Override
+	public String toString(){
+		return ItemName;
 	}
 }
