@@ -10,7 +10,8 @@ android:orientation="vertical" >
     android:id="@+id/ArchiveButton"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="@string/Archive"/>
+    android:text="@string/Archive"
+    android:onClick= "toArchive"/>
 
     <EditText
         android:layout_width="wrap_content"

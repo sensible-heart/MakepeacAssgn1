@@ -7,5 +7,6 @@
     <string name="enterItem">Enter your to do here.</string>
     <string name="Add">Add</string>
     <string name="Archive">To Archived ToDos</string>
+    <string name="title_activity_archive">Archived To Dos</string>
 
 </resources>

@@ -18,6 +18,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,78 +34,73 @@ import android.widget.ListView;
 
 public class MainActivity extends ActionBarActivity {
 	EditText ItemAdder;
-	String[] ToDos;
 	List<ToDoItem> CurrentToDos = new ArrayList<ToDoItem>();
 	ArrayAdapter<ToDoList> listAdapter;
 	ListView ToDoListView;
-	ArrayAdapter<ToDoItem> adapter;
-	//CheckedTextView CheckItem;
-	private static final String FILENAME = "file.sav";
-
+	ToDoItemAdapter adapter;//creates a new item adapter to use for displaying list items
+	UpdateToDoLists FileUpdater;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        ItemAdder = (EditText)findViewById(R.id.AddItems);
-        Button Add = (Button)findViewById(R.id.AddButton);
-        ListView ToDoListView = (ListView)findViewById(R.id.ToDoListView);
-        final CheckedTextView CheckItem = (CheckedTextView)findViewById(R.id.CheckedView);
+        ItemAdder = (EditText)findViewById(R.id.AddItems);//grabs id of edittext box which we use to grab its contents
+        Button Add = (Button)findViewById(R.id.AddButton);//grabs id of the Add button
+        ListView ToDoListView = (ListView)findViewById(R.id.ToDoListView);//grabs ID of the listview for our main activity
         
-//        ToDoListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-//
-//        	public void onItemClick(View v){
-//        		
-//        	}
-//        });
-        
-        Add.setOnClickListener(new View.OnClickListener() {
+        Add.setOnClickListener(new View.OnClickListener() {//once the add button is clicked that triggers the save mechanism for our entered text
 			
 			@Override
 			public void onClick(View v) {
 		    	setResult(RESULT_OK);
-		    	String item = ItemAdder.getText().toString();;
-		    	ToDoItem now = new ToDoItem(item);
-		    	CurrentToDos.add(now);
-		    	ItemAdder.setText("");
-		    	saveInFile();
-		    	adapter.notifyDataSetChanged();
+		    	String item = ItemAdder.getText().toString();//this is the text pulled from our edittext box
+		    	ToDoItem now = new ToDoItem(item);//creates a new ToDo item out of our pulled text
+		    	CurrentToDos.add(now);//adds this new item to our list of CurrentToDos
+		    	ItemAdder.setText("");//resets the edit text box to a blank string deleting our current text making the box ready for the new entry
+		    	FileUpdater = new UpdateToDoLists();
+		    	FileUpdater.saveInFile(CurrentToDos, getBaseContext());//saves our CurrentToDos list into a file for use later
+		    	adapter.notifyDataSetChanged();//tells the adapter to update the listview
 			}
 		});
         
-        
-        
-//        ToDoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {  
-//            
-//        	@Override  
-//            public void onItemClick( AdapterView<?> parent, View item,int position, long id) {  
-//				// TODO Auto-generated method stub
-//        		//ToDoI List = listAdapter.getItem(position);
-//        		ToDoItem current = (ToDoItem) listAdapter.getItem(position);
-////        		if(CheckItem.isChecked()){
-////        			CheckItem.setChecked(false);
-////        		} else {
-////        			CheckItem.setChecked(true);
-////        		}
-//        		CheckedTextView checkedItem = (CheckedTextView)item.findViewById(R.id.CheckedView);
-//        		checkedItem.toggle();
-//        		current.changeChecked();
-//        		CheckBoxItemView CheckBoxView = (CheckBoxItemView)item.getTag();
-//        		CheckBoxView.getCheckBox().setChecked(current.isChecked());
-//			}
-//		});
-        
-        
+        registerForContextMenu(ToDoListView);  
+    }
+    public void toArchive(View view){
+    	Intent intent = new Intent(this,ArchiveActivity.class);
+    	startActivity(intent);
+    }
+    //Adapted from a tutorial http://www.mikeplate.com/2010/01/21/show-a-context-menu-for-long-clicks-in-an-android-listview/ on 09/23/14
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,ContextMenuInfo menuInfo) {
+      if (v.getId()==R.id.ToDoListView) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+        menu.setHeaderTitle(CurrentToDos.get(info.position).GetName());
+        String[] menuItems = getResources().getStringArray(R.array.menu);
+        for (int i = 0; i<menuItems.length; i++) {
+          menu.add(Menu.NONE, i, i, menuItems[i]);
+        }
+      }
+    }
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+      AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+      int menuItemIndex = item.getItemId();
+      String[] menuItems = getResources().getStringArray(R.array.menu);
+      String menuItemName = menuItems[menuItemIndex];
+      String listItemName = CurrentToDos.get(info.position).GetName();
+      
+      return true;
     }
 
     @Override
     protected void onStart(){
     	//TODO Auto-generated method stub
     	super.onStart();
+    	FileUpdater = new UpdateToDoLists();
     	ToDoListView = (ListView)findViewById(R.id.ToDoListView);
-    	if (CurrentToDos != null)
-        	loadFromFile();
+    	if (CurrentToDos != null)//checks to see basically if there are any items in currentToDos
+        	CurrentToDos = FileUpdater.loadFromFile(CurrentToDos,this);//then loads from file to populate
     	adapter = new ToDoItemAdapter(this,CurrentToDos);
     	ToDoListView.setAdapter(adapter);
     }
@@ -116,42 +113,6 @@ public class MainActivity extends ActionBarActivity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-    
-    private void loadFromFile(){
-		try {
-			FileInputStream fis = openFileInput(FILENAME);
-			BufferedReader in = new BufferedReader(new InputStreamReader(fis));
-			//learned in Lab 3 09/23/14
-			Gson gson = new Gson();
-			Type listType = new TypeToken<ArrayList<ToDoItem>>(){}.getType();
-			CurrentToDos = gson.fromJson(in, listType);
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-    
-    
-    private void saveInFile() {
-		try {
-			FileOutputStream fos = openFileOutput(FILENAME,0);
-			Gson gson = new Gson();
-			OutputStreamWriter osw = new OutputStreamWriter(fos);
-			gson.toJson(CurrentToDos,osw);
-			osw.flush();
-			fos.close();	
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -163,15 +124,5 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-    private void updateData()
-    {
-	  //TODO Auto-generated method stub
-		super.onStart();
-		ToDoListView = (ListView)findViewById(R.id.ToDoListView);
-		loadFromFile();
-		ArrayAdapter<ToDoItem> adapter = new ArrayAdapter<ToDoItem>(this,R.layout.blandlayout, CurrentToDos);
-		ToDoListView.setAdapter(adapter);
-    	
     }
 }
