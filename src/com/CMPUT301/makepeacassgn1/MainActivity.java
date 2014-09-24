@@ -34,11 +34,12 @@ import android.widget.ListView;
 
 public class MainActivity extends ActionBarActivity {
 	EditText ItemAdder;
+	List<ToDoItem> ArchiveToDos = new ArrayList<ToDoItem>();
 	List<ToDoItem> CurrentToDos = new ArrayList<ToDoItem>();
 	ArrayAdapter<ToDoList> listAdapter;
 	ListView ToDoListView;
 	ToDoItemAdapter adapter;//creates a new item adapter to use for displaying list items
-	UpdateToDoLists FileUpdater;
+	UpdateToDoLists FileUpdater= new UpdateToDoLists();
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +59,7 @@ public class MainActivity extends ActionBarActivity {
 		    	ToDoItem now = new ToDoItem(item);//creates a new ToDo item out of our pulled text
 		    	CurrentToDos.add(now);//adds this new item to our list of CurrentToDos
 		    	ItemAdder.setText("");//resets the edit text box to a blank string deleting our current text making the box ready for the new entry
-		    	FileUpdater = new UpdateToDoLists();
+		    	
 		    	FileUpdater.saveInFile(CurrentToDos, getBaseContext());//saves our CurrentToDos list into a file for use later
 		    	adapter.notifyDataSetChanged();//tells the adapter to update the listview
 			}
@@ -89,6 +90,11 @@ public class MainActivity extends ActionBarActivity {
       String[] menuItems = getResources().getStringArray(R.array.menu);
       String menuItemName = menuItems[menuItemIndex];
       String listItemName = CurrentToDos.get(info.position).GetName();
+      ToDoItem current = CurrentToDos.get(info.position);
+      if (menuItemName == "Archive"){
+    	  moveToArchive(listItemName);
+      }
+
       
       return true;
     }
@@ -112,6 +118,18 @@ public class MainActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+    
+    public void moveToArchive(String item){
+    	for (int i=0; i<CurrentToDos.size();i++){
+    		if (CurrentToDos.get(i).GetName()==item){
+    			CurrentToDos.remove(i);//removes all instances of i from CurrentToDos
+    		}	
+    	}
+    	ArchiveToDos.add(new ToDoItem(item));
+    	FileUpdater.saveInFile2(ArchiveToDos,this);
+    	CurrentToDos = FileUpdater.loadFromFile(CurrentToDos, this);
+    	adapter.notifyDataSetChanged();
     }
 
     @Override
