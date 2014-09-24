@@ -49,17 +49,13 @@ public class MainActivity extends ActionBarActivity {
         ItemAdder = (EditText)findViewById(R.id.AddItems);
         Button Add = (Button)findViewById(R.id.AddButton);
         ListView ToDoListView = (ListView)findViewById(R.id.ToDoListView);
+        final CheckedTextView CheckItem = (CheckedTextView)findViewById(R.id.CheckedView);
         
-//        final CheckedTextView CheckItem = (CheckedTextView)findViewById(R.id.CheckedView);
-//        CheckItem.setOnClickListener(new View.OnClickListener(){
+//        ToDoListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 //
-////        	public void onClick(View v){
-////        		if(CheckItem.isChecked()){
-////        			CheckItem.setChecked(false);
-////        		} else {
-////        			CheckItem.setChecked(true);
-////        		}
-////        	}
+//        	public void onItemClick(View v){
+//        		
+//        	}
 //        });
         
         Add.setOnClickListener(new View.OnClickListener() {
@@ -78,18 +74,25 @@ public class MainActivity extends ActionBarActivity {
         
         
         
-        ToDoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {  
-            
-        	@Override  
-            public void onItemClick( AdapterView<?> parent, View item,int position, long id) {  
-				// TODO Auto-generated method stub
-        		//ToDoI List = listAdapter.getItem(position);
-        		ToDoItem current = (ToDoItem) listAdapter.getItem(position);
-        		current.changeChecked();
-        		CheckBoxItemView CheckBoxView = (CheckBoxItemView)item.getTag();
-        		CheckBoxView.getCheckBox().setChecked(current.isChecked());
-			}
-		});
+//        ToDoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {  
+//            
+//        	@Override  
+//            public void onItemClick( AdapterView<?> parent, View item,int position, long id) {  
+//				// TODO Auto-generated method stub
+//        		//ToDoI List = listAdapter.getItem(position);
+//        		ToDoItem current = (ToDoItem) listAdapter.getItem(position);
+////        		if(CheckItem.isChecked()){
+////        			CheckItem.setChecked(false);
+////        		} else {
+////        			CheckItem.setChecked(true);
+////        		}
+//        		CheckedTextView checkedItem = (CheckedTextView)item.findViewById(R.id.CheckedView);
+//        		checkedItem.toggle();
+//        		current.changeChecked();
+//        		CheckBoxItemView CheckBoxView = (CheckBoxItemView)item.getTag();
+//        		CheckBoxView.getCheckBox().setChecked(current.isChecked());
+//			}
+//		});
         
         
     }
@@ -101,7 +104,7 @@ public class MainActivity extends ActionBarActivity {
     	ToDoListView = (ListView)findViewById(R.id.ToDoListView);
     	if (CurrentToDos != null)
         	loadFromFile();
-    	adapter = new ArrayAdapter<ToDoItem>(this,R.layout.blandlayout, CurrentToDos);
+    	adapter = new ToDoItemAdapter(this,CurrentToDos);
     	ToDoListView.setAdapter(adapter);
     }
 

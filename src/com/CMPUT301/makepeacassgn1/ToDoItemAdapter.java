@@ -31,7 +31,7 @@ public class ToDoItemAdapter extends ArrayAdapter<ToDoItem> {
 	    
 	 // Create a new row view  
 	      if ( convertView == null ) {  
-	        convertView = inflater.inflate(R.layout.blandlayout, null);  
+	        convertView = inflater.inflate(R.layout.one_row, null);  
 	          
 	        // Find the child views.  
 	        textView = (TextView) convertView.findViewById( R.id.rowTextView );  
