@@ -5,4 +5,8 @@
         <item>Delete</item>
         <item>Send</item>
     </array>
+    <array name= "Archive">
+        <item>Delete</item>
+        <item>Send</item>
+    </array>
 </resources>

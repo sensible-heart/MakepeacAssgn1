@@ -83,6 +83,7 @@ public class MainActivity extends ActionBarActivity {
         }
       }
     }
+  //Adapted from a tutorial http://www.mikeplate.com/2010/01/21/show-a-context-menu-for-long-clicks-in-an-android-listview/ on 09/23/14
     @Override
     public boolean onContextItemSelected(MenuItem item) {
       AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
@@ -127,15 +128,15 @@ public class MainActivity extends ActionBarActivity {
     }
     
     public void moveToArchive(ToDoItem item){
-    	for (int i=0; i<CurrentToDos.size();i++){
+    	for (int i=0; i<CurrentToDos.size();i++){//goes through all items of CurrentToDos and removes each instance of item
     		if (CurrentToDos.get(i)==item){
-    			CurrentToDos.remove(i);//removes all instances of i from CurrentToDos
+    			CurrentToDos.remove(i);//removes instance of i from CurrentToDos
     		}	
     	}
-    	ArchiveToDos.add(item);
-    	FileUpdater.saveInFile2(ArchiveToDos,this);
-    	FileUpdater.saveInFile(CurrentToDos, this);
-    	adapter.notifyDataSetChanged();
+    	ArchiveToDos.add(item);//adds the desired item to our List of archived items
+    	FileUpdater.saveInFile2(ArchiveToDos,this);//saves the new ArchiveToDos list complete with new items
+    	FileUpdater.saveInFile(CurrentToDos, this);//saves the altered CurrentToDos
+    	adapter.notifyDataSetChanged();//tells the view to change to reflect list changes
     }
 
     @Override

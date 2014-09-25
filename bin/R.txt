@@ -4,6 +4,7 @@ int anim abc_slide_in_bottom 0x7f040002
 int anim abc_slide_in_top 0x7f040003
 int anim abc_slide_out_bottom 0x7f040004
 int anim abc_slide_out_top 0x7f040005
+int array Archive 0x7f0c0001
 int array menu 0x7f0c0000
 int attr actionBarDivider 0x7f01000f
 int attr actionBarItemBackground 0x7f010010
@@ -240,8 +241,9 @@ int id AddButton 0x7f05003f
 int id AddItems 0x7f05003e
 int id ArchiveButton 0x7f05003d
 int id ArchiveList 0x7f05003c
-int id CheckBox01 0x7f050043
+int id CheckBox 0x7f050043
 int id CheckedView 0x7f050041
+int id ItemText 0x7f050042
 int id ToDoListView 0x7f050040
 int id action_bar 0x7f05001c
 int id action_bar_activity_content 0x7f050015
@@ -282,7 +284,6 @@ int id normal 0x7f050000
 int id progress_circular 0x7f050018
 int id progress_horizontal 0x7f050019
 int id radio 0x7f05002f
-int id rowTextView 0x7f050042
 int id search_badge 0x7f050032
 int id search_bar 0x7f050031
 int id search_button 0x7f050033

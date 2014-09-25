@@ -1,4 +1,9 @@
 package com.CMPUT301.makepeacassgn1;
+/* This custom adapter was not created by me, I found it on an excellent tutorial here:
+ * http://windrealm.org/tutorials/android/listview-with-checkboxes-without-listactivity.php
+ * on 09/17/14. My only hand at this was to adapt the code to fit my variable names and 
+ * custom class ToDoItem.
+ */
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +22,12 @@ public class ToDoItemAdapter extends ArrayAdapter<ToDoItem> {
 	private LayoutInflater inflater;
 	
 	public ToDoItemAdapter(Context context, List<ToDoItem> currentToDos ){
-		super( context, R.layout.blandlayout, R.id.rowTextView, currentToDos );
+		super( context, R.layout.blandlayout, R.id.ItemText, currentToDos );
 		inflater = LayoutInflater.from(context) ;  
 	}
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent){
-		//ToDoList List = (ToDoList) this.getItem(position);//might not work
 		ToDoItem item = (ToDoItem) this.getItem(position);
 		
 		CheckBox checkBox ;   
@@ -34,8 +38,8 @@ public class ToDoItemAdapter extends ArrayAdapter<ToDoItem> {
 	        convertView = inflater.inflate(R.layout.one_row, null);  
 	          
 	        // Find the child views.  
-	        textView = (TextView) convertView.findViewById( R.id.rowTextView );  
-	        checkBox = (CheckBox) convertView.findViewById( R.id.CheckBox01 );  
+	        textView = (TextView) convertView.findViewById( R.id.ItemText );  
+	        checkBox = (CheckBox) convertView.findViewById( R.id.CheckBox );  
 	          
 	        // Optimization: Tag the row with it's child views, so we don't have to   
 	        // call findViewById() later when we reuse the row.  

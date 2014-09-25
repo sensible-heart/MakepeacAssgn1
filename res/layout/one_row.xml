@@ -4,14 +4,14 @@
   android:layout_width="fill_parent"
   android:layout_height="fill_parent">
   
-  <TextView android:id="@+id/rowTextView" 
+  <TextView android:id="@+id/ItemText" 
     android:layout_width="wrap_content" 
     android:layout_height="wrap_content"
     android:padding="10dp"
     android:textSize="16sp" >
   </TextView>
   
-  <CheckBox android:id="@+id/CheckBox01" 
+  <CheckBox android:id="@+id/CheckBox" 
     android:layout_width="wrap_content" 
     android:layout_height="wrap_content" 
     android:padding="10dp"

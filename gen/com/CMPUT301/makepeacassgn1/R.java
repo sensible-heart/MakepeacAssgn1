@@ -17,6 +17,7 @@ public final class R {
         public static final int abc_slide_out_top=0x7f040005;
     }
     public static final class array {
+        public static final int Archive=0x7f0c0001;
         public static final int menu=0x7f0c0000;
     }
     public static final class attr {
@@ -1087,8 +1088,9 @@ containing a value of this type.
         public static final int AddItems=0x7f05003e;
         public static final int ArchiveButton=0x7f05003d;
         public static final int ArchiveList=0x7f05003c;
-        public static final int CheckBox01=0x7f050043;
+        public static final int CheckBox=0x7f050043;
         public static final int CheckedView=0x7f050041;
+        public static final int ItemText=0x7f050042;
         public static final int ToDoListView=0x7f050040;
         public static final int action_bar=0x7f05001c;
         public static final int action_bar_activity_content=0x7f050015;
@@ -1129,7 +1131,6 @@ containing a value of this type.
         public static final int progress_circular=0x7f050018;
         public static final int progress_horizontal=0x7f050019;
         public static final int radio=0x7f05002f;
-        public static final int rowTextView=0x7f050042;
         public static final int search_badge=0x7f050032;
         public static final int search_bar=0x7f050031;
         public static final int search_button=0x7f050033;

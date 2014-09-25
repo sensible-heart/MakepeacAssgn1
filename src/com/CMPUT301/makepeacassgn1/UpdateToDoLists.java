@@ -18,20 +18,20 @@ import com.google.gson.reflect.TypeToken;
 
 public class UpdateToDoLists {
 	private static final String FILENAME = "file.sav";//name of file we will save list items to for CurrentToDo items
-	private static final String FILENAME2 = "file2.sav";
+	private static final String FILENAME2 = "file2.sav";//file used to save archive items so they can be passed between activities and classes
 	
-	public UpdateToDoLists(){
+	public UpdateToDoLists(){//initializes
 		super();
 	}
-	
+	//The save and load file methods were adapted from code given to us in lab 3 on 09/23/14
     public void saveInFile(List <ToDoItem> CurrentToDos, Context context) {
-		try {
-			FileOutputStream fos = context.openFileOutput(FILENAME,0);
+		try {//used to handle exceptions
+			FileOutputStream fos = context.openFileOutput(FILENAME,0);//creates a new file stream using our CurrentToDos save file
 			Gson gson = new Gson();
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
 			gson.toJson(CurrentToDos,osw);
-			osw.flush();
-			fos.close();	
+			osw.flush();//makes sure to flush data from writer so writing can complete
+			fos.close();	//closes file once changes are done
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -49,7 +49,7 @@ public class UpdateToDoLists {
 			Gson gson = new Gson();
 			Type listType = new TypeToken<ArrayList<ToDoItem>>(){}.getType();
 			CurrentToDos = gson.fromJson(in, listType);
-			
+			//
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -57,8 +57,9 @@ public class UpdateToDoLists {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return CurrentToDos;
+		return CurrentToDos;//returns newlyloaded CurrentToDos list
 	}
+    //The next two methods are just adapted from the ones above, nothing really changes except they are adapted to deal only with archive items
     public void saveInFile2(List <ToDoItem> ArchiveToDos, Context context) {
 		try {
 			FileOutputStream fos = context.openFileOutput(FILENAME2,0);
