@@ -3,31 +3,27 @@ package com.CMPUT301.makepeacassgn1;
 
 public class ToDoItem extends ToDoList {
 	private String ItemName;
-	private Boolean Archive;//Either in archive or in current ToDo
 	private Boolean Checked = false;//initialized to an unchecked state
 	
 	public ToDoItem(String name){
 		super();
 		ItemName = name;
-		Archive = false;
 	}
 	public String GetName(){//retrieves string name of Item
 		return ItemName;
 	}
-	public Boolean IsInArchive(){//Retrieves whether an item in in the archive or not
-		return Archive;
-	}
-	public Boolean isChecked(){
+
+	public Boolean isChecked(){//checks to see whether an object is checked
 		return Checked;
 	}
-	public void changeChecked(){
+	public void changeChecked(){//toggles the checked state of an item
 		this.Checked = !Checked;
 	}
-	public void setChecked(boolean Checked) {  
+	public void setChecked(boolean Checked) {  //sets the state to whatever is passed to the method
 	      this.Checked = Checked;  
 	}
 	@Override
-	public String toString(){
+	public String toString(){//overrides object class toString() method to return name of ToDoItem
 		return ItemName;
 	}
 }

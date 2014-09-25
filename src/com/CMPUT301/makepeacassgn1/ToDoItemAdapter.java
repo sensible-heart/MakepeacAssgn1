@@ -4,10 +4,7 @@ package com.CMPUT301.makepeacassgn1;
  * on 09/17/14. My only hand at this was to adapt the code to fit my variable names and 
  * custom class ToDoItem.
  */
-
-import java.util.ArrayList;
 import java.util.List;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
-//Inspired by http://windrealm.org/tutorials/android/listview-with-checkboxes-without-listactivity.php
+
 public class ToDoItemAdapter extends ArrayAdapter<ToDoItem> {
-	
-	
+
 	private LayoutInflater inflater;
 	
 	public ToDoItemAdapter(Context context, List<ToDoItem> currentToDos ){

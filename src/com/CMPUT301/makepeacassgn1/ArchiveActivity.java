@@ -16,20 +16,20 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 public class ArchiveActivity extends ActionBarActivity {
-	ListView archiveList;
-	UpdateToDoLists FileUpdater= new UpdateToDoLists();
-	List <ToDoItem> ArchiveToDos = new ArrayList<ToDoItem>();
-	ToDoItemAdapter adapter;
-	ArrayAdapter<ToDoList> listAdapter;
+	ListView archiveList;//creates a variable for listview
+	UpdateToDoLists FileUpdater= new UpdateToDoLists();//creates an instance of UpDateToDoLists, used to load and save data
+	List <ToDoItem> ArchiveToDos = new ArrayList<ToDoItem>();//creates a list of ToDoItem that is used to store Archive items
+	ToDoItemAdapter adapter;//creates a custom adapter for making the right view occur in listview
+	ArrayAdapter<ToDoList> listAdapter;//creates an array adapter for my ToDoList items
 
 	
 	
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {//basic onCreate methods here
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_archive);
-		ListView archiveList = (ListView) findViewById(R.id.ArchiveList);
+		setContentView(R.layout.activity_archive);//sets view to activity_archive.xml
+		ListView archiveList = (ListView) findViewById(R.id.ArchiveList);//grabs the id of listview used to create a context menu
 		registerForContextMenu(archiveList);
 		
 	}
@@ -42,17 +42,17 @@ public class ArchiveActivity extends ActionBarActivity {
     	if (ArchiveToDos != null)//checks to see basically if there are any items in currentToDos
         	ArchiveToDos = FileUpdater.loadFromFile2(ArchiveToDos,this);//then loads from file to populate
     	adapter = new ToDoItemAdapter(this,ArchiveToDos);
-    	archiveList.setAdapter(adapter);
+    	archiveList.setAdapter(adapter);//sets current adapter to the custom one
 	}
     //Adapted from a tutorial http://www.mikeplate.com/2010/01/21/show-a-context-menu-for-long-clicks-in-an-android-listview/ on 09/23/14
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,ContextMenuInfo menuInfo) {
-      if (v.getId()==R.id.ArchiveList) {
+      if (v.getId()==R.id.ArchiveList) { 
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
-        menu.setHeaderTitle(ArchiveToDos.get(info.position).GetName());
-        String[] menuItems = getResources().getStringArray(R.array.Archive);
-        for (int i = 0; i<menuItems.length; i++) {
-          menu.add(Menu.NONE, i, i, menuItems[i]);
+        menu.setHeaderTitle(ArchiveToDos.get(info.position).GetName());//gets the name of the menu based upon the position in ArchiveToDos, getting the string name of the item
+        String[] menuItems = getResources().getStringArray(R.array.Archive);//retrieves names that appear in the menu from the predefined array holding said names
+        for (int i = 0; i<menuItems.length; i++) {//iterates through menuItems obtaining the string names that are supposed to appear in the menu
+          menu.add(Menu.NONE, i, i, menuItems[i]);//adds these found string names to the generated menu
         }
       }
     }
@@ -62,10 +62,10 @@ public class ArchiveActivity extends ActionBarActivity {
     public boolean onContextItemSelected(MenuItem item) {
       AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
       int menuItemIndex = item.getItemId();
-      String[] menuItems = getResources().getStringArray(R.array.Archive);
-      String menuItemName = menuItems[menuItemIndex];
-      String listItemName = ArchiveToDos.get(info.position).GetName();
-      ToDoItem current = ArchiveToDos.get(info.position);
+      //String[] menuItems = getResources().getStringArray(R.array.Archive);
+//      String menuItemName = menuItems[menuItemIndex];
+//      String listItemName = ArchiveToDos.get(info.position).GetName();
+//      ToDoItem current = ArchiveToDos.get(info.position);
       if (menuItemIndex == 0){//deletes chosen Archive Item
     	  ArchiveToDos.remove(info.position);
       }

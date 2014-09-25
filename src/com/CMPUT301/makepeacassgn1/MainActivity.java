@@ -1,21 +1,8 @@
 package com.CMPUT301.makepeacassgn1;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import android.support.v7.app.ActionBarActivity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -26,11 +13,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.ListView;
-
-
 
 public class MainActivity extends ActionBarActivity {
 	EditText ItemAdder;
@@ -88,9 +72,9 @@ public class MainActivity extends ActionBarActivity {
     public boolean onContextItemSelected(MenuItem item) {
       AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
       int menuItemIndex = item.getItemId();
-      String[] menuItems = getResources().getStringArray(R.array.menu);
-      String menuItemName = menuItems[menuItemIndex];
-      String listItemName = CurrentToDos.get(info.position).GetName();
+//      String[] menuItems = getResources().getStringArray(R.array.menu);
+//      String menuItemName = menuItems[menuItemIndex];
+//      String listItemName = CurrentToDos.get(info.position).GetName();
       ToDoItem current = CurrentToDos.get(info.position);
       if (menuItemIndex == 0){
     	  moveToArchive(current);
@@ -114,8 +98,8 @@ public class MainActivity extends ActionBarActivity {
     	ToDoListView = (ListView)findViewById(R.id.ToDoListView);
     	if (CurrentToDos != null)//checks to see basically if there are any items in currentToDos
         	CurrentToDos = FileUpdater.loadFromFile(CurrentToDos,this);//then loads from file to populate
-    	adapter = new ToDoItemAdapter(this,CurrentToDos);
-    	ToDoListView.setAdapter(adapter);
+    	adapter = new ToDoItemAdapter(this,CurrentToDos);//creates a custom adapter for CurrentToDos
+    	ToDoListView.setAdapter(adapter);//sets the adapter to reflect CurrentToDos
     }
 
 
