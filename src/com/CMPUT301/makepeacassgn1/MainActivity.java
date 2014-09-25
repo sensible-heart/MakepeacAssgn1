@@ -91,9 +91,15 @@ public class MainActivity extends ActionBarActivity {
       String menuItemName = menuItems[menuItemIndex];
       String listItemName = CurrentToDos.get(info.position).GetName();
       ToDoItem current = CurrentToDos.get(info.position);
-      if (menuItemName == "Archive"){
-    	  moveToArchive(listItemName);
+      if (menuItemIndex == 0){
+    	  moveToArchive(current);
       }
+      if (menuItemIndex == 1){
+    	  CurrentToDos.remove(info.position);
+      }
+      FileUpdater.saveInFile(CurrentToDos, this);
+      adapter.notifyDataSetChanged();
+      
 
       
       return true;
@@ -120,15 +126,15 @@ public class MainActivity extends ActionBarActivity {
         return true;
     }
     
-    public void moveToArchive(String item){
+    public void moveToArchive(ToDoItem item){
     	for (int i=0; i<CurrentToDos.size();i++){
-    		if (CurrentToDos.get(i).GetName()==item){
+    		if (CurrentToDos.get(i)==item){
     			CurrentToDos.remove(i);//removes all instances of i from CurrentToDos
     		}	
     	}
-    	ArchiveToDos.add(new ToDoItem(item));
+    	ArchiveToDos.add(item);
     	FileUpdater.saveInFile2(ArchiveToDos,this);
-    	CurrentToDos = FileUpdater.loadFromFile(CurrentToDos, this);
+    	FileUpdater.saveInFile(CurrentToDos, this);
     	adapter.notifyDataSetChanged();
     }
 
