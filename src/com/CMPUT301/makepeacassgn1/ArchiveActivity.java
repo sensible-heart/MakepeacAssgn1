@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -14,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 public class ArchiveActivity extends ActionBarActivity {
+	
 	private ListView archiveList;//creates a variable for listview
 	private UpdateToDoLists FileUpdater= new UpdateToDoLists();//creates an instance of UpDateToDoLists, used to load and save data
 	private List <ToDoItem> ArchiveToDos = new ArrayList<ToDoItem>();//creates a list of ToDoItem that is used to store Archive items
@@ -24,8 +26,7 @@ public class ArchiveActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_archive);//sets view to activity_archive.xml
 		ListView archiveList = (ListView) findViewById(R.id.ArchiveList);//grabs the id of listview used to create a context menu
-		registerForContextMenu(archiveList);
-		
+		registerForContextMenu(archiveList);//single line from http://www.mikeplate.com/2010/01/21/show-a-context-menu-for-long-clicks-in-an-android-listview/ on 09/23/14
 	}
 	
 	@Override
@@ -49,7 +50,7 @@ public class ArchiveActivity extends ActionBarActivity {
         String[] menuItems = getResources().getStringArray(R.array.Archive);//retrieves names that appear in the menu from the predefined array holding said names
         for (int i = 0; i<menuItems.length; i++) {//iterates through menuItems obtaining the string names that are supposed to appear in the menu
           menu.add(Menu.NONE, i, i, menuItems[i]);//adds these found string names to the generated menu
-        }
+        }//end of cited code
       }
     }
 	
@@ -58,8 +59,15 @@ public class ArchiveActivity extends ActionBarActivity {
     public boolean onContextItemSelected(MenuItem item) {
       AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
       int menuItemIndex = item.getItemId();//retrieves index of selected item from list
+      //end of cited code
       if (menuItemIndex == 0){//compares whether or not to delete an item based on the chosen index and the index of delete
     	  ArchiveToDos.remove(info.position);//removes item from ArchiveToDos based on the selected item from the listview
+      }
+      if (menuItemIndex == 1){
+    	  	Intent intent = new Intent(Intent.ACTION_SEND);//creates a new intent used to send the item
+	  	  	intent.setType("message/rfc822");//allows the user to select any email app they have installed
+			intent.putExtra(Intent.EXTRA_TEXT, "This is your current to do: " + ArchiveToDos.get(info.position).GetName());//makes sure the slected to do is included in the subject text
+			startActivity(intent);//initializes the email activity
       }
       FileUpdater.saveInFile2(ArchiveToDos, this);//updates the current list of ArchiveToDos
       adapter.notifyDataSetChanged();//makes sure the adapter changes accordingly

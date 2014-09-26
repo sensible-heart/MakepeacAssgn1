@@ -1,7 +1,7 @@
 package com.CMPUT301.makepeacassgn1;
 import android.widget.CheckBox;
 import android.widget.TextView;
-/*This code as well was adapted from the excellent custom view tutorial on:
+/*This whole class code was adapted from the excellent custom view tutorial on:
  * http://windrealm.org/tutorials/android/listview-with-checkboxes-without-listactivity.php 
  * 09/17/14
  */
@@ -26,5 +26,4 @@ public class CheckBoxItemView {
 	    public void setTextView(TextView itemtext) {  //sets the new text to the passed itemtext
 	      this.itemtext = itemtext;  
 	    }
-
 }

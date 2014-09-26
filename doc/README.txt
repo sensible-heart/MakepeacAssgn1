@@ -1,7 +1,7 @@
 Project Name: makepeacAssgn1
 Author: Alexandra Makepeace
 
-Install Instructions:
+read INSTALL
 1. Download MakepeacAssgn1 from github using https://github.com/sensible-heart/MakepeacAssgn1.git
 2. Open Eclipse Android
 3. Import MakepeacAssgn1
@@ -9,8 +9,8 @@ Install Instructions:
 5. Right click on the MakepeacAssgn1 folder and select: run as, android application
 6. Enjoy your app experience!
 
-Use Instruction:
 
+read INSTRUCTIONS
 All instructions assume the app is open and running on your device or emulator.
 	To Add a ToDo Item:
 		1. Select the text box that says “Enter your to do here”
@@ -44,5 +44,17 @@ All instructions assume the app is open and running on your device or emulator.
 		3. Click on that item, holding your finger there until a menu appears
 		4. Select delete from that menu
 		5. Observe the item disappear from your Archive without a trace 
+
+read COLLABORATORS
+Wyatt Fleming
+
+
+read CITATION
+This project uses code from a couple of tutorials. 
+Those tutorials were found at the following links:
+http://windrealm.org/tutorials/android/listview-with-checkboxes-without-listactivity.php on 09/17/14
+http://www.mikeplate.com/2010/01/21/show-a-context-menu-for-long-clicks-in-an-android-listview/ on 09/23/14
+And some code was adapted from the Labs, namely Lab 2 09/16/14 and Lab 3 09/23/14.
+Any code that has been taken will have a comment before it and after it to identify it as not from me.
 	
 		

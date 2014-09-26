@@ -12,6 +12,10 @@ android:orientation="vertical" >
     android:layout_height="wrap_content"
     android:text="@string/Archive"
     android:onClick= "toArchive"/>
+<TextView 
+    android:id="@+id/NumberOfChecked"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
 
     <EditText
         android:layout_width="wrap_content"
@@ -33,6 +37,8 @@ android:orientation="vertical" >
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" 
     android:scrollbars="vertical"
-    android:fadingEdge="none"/>
+    android:fadingEdge="none"
+    android:choiceMode="multipleChoice"
+    />
 
 </LinearLayout>

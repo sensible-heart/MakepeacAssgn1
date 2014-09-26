@@ -59,6 +59,7 @@ public class UpdateToDoLists {
 		}
 		return CurrentToDos;//returns newlyloaded CurrentToDos list
 	}
+    //end of lab altered code
     //The next two methods are just adapted from the ones above, nothing really changes except they are adapted to deal only with archive items
     public void saveInFile2(List <ToDoItem> ArchiveToDos, Context context) {
 		try {

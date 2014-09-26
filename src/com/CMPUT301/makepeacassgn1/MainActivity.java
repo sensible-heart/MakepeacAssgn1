@@ -11,17 +11,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
+	
 	private EditText ItemAdder;
+	private TextView CheckedText;
 	private List<ToDoItem> ArchiveToDos = new ArrayList<ToDoItem>();
 	private List<ToDoItem> CurrentToDos = new ArrayList<ToDoItem>();
 	private ListView ToDoListView;
 	private ToDoItemAdapter adapter;//creates a new item adapter to use for displaying list items
 	private UpdateToDoLists FileUpdater= new UpdateToDoLists();
+	private NumberChecked Checked = new NumberChecked();
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +36,17 @@ public class MainActivity extends ActionBarActivity {
         ItemAdder = (EditText)findViewById(R.id.AddItems);//grabs id of edittext box which we use to grab its contents
         Button Add = (Button)findViewById(R.id.AddButton);//grabs id of the Add button
         ListView ToDoListView = (ListView)findViewById(R.id.ToDoListView);//grabs ID of the listview for our main activity
+        //http://windrealm.org/tutorials/android/listview-with-checkboxes-without-listactivity.php on 09/17/14
+        ToDoListView. setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        	@Override
+            public void onItemClick( AdapterView<?> parent, View item,int position, long id) {
+        		ToDoItem currentitem = adapter.getItem( position );  
+                currentitem.changeChecked();  
+                CheckBoxItemView viewHolder = (CheckBoxItemView) item.getTag();  
+                viewHolder.getCheckBox().setChecked( currentitem.isChecked() );  
+        	}
+        });
+    
         
         Add.setOnClickListener(new View.OnClickListener() {//once the add button is clicked that triggers the save mechanism for our entered text
 			
@@ -41,14 +57,13 @@ public class MainActivity extends ActionBarActivity {
 		    	ToDoItem now = new ToDoItem(item);//creates a new ToDo item out of our pulled text
 		    	CurrentToDos.add(now);//adds this new item to our list of CurrentToDos
 		    	ItemAdder.setText("");//resets the edit text box to a blank string deleting our current text making the box ready for the new entry
-		    	
 		    	FileUpdater.saveInFile(CurrentToDos, getBaseContext());//saves our CurrentToDos list into a file for use later
 		    	adapter.notifyDataSetChanged();//tells the adapter to update the listview
 			}
 		});
-        
-        registerForContextMenu(ToDoListView);  
+        registerForContextMenu(ToDoListView);  //this line from http://www.mikeplate.com/2010/01/21/show-a-context-menu-for-long-clicks-in-an-android-listview/ on 09/23/14
     }
+    
     public void toArchive(View view){
     	Intent intent = new Intent(this,ArchiveActivity.class);
     	startActivity(intent);
@@ -65,17 +80,26 @@ public class MainActivity extends ActionBarActivity {
         }
       }
     }
+    //End of adapted code
+    
   //Adapted from a tutorial http://www.mikeplate.com/2010/01/21/show-a-context-menu-for-long-clicks-in-an-android-listview/ on 09/23/14
     @Override
     public boolean onContextItemSelected(MenuItem item) {
       AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
       int menuItemIndex = item.getItemId();
       ToDoItem current = CurrentToDos.get(info.position);
+  //End of adapted code
       if (menuItemIndex == 0){
     	  moveToArchive(current);
       }
       if (menuItemIndex == 1){
     	  CurrentToDos.remove(info.position);
+      }
+      if (menuItemIndex == 2){
+    	  	Intent intent = new Intent(Intent.ACTION_SEND);//creates a new intent used to send the item
+    	  	intent.setType("message/rfc822");//allows the user to select any email app they have installed
+  			intent.putExtra(Intent.EXTRA_TEXT, "This is your current to do: " + CurrentToDos.get(info.position).GetName());//makes sure the slected to do is included in the subject text
+  			startActivity(intent);//initializes the email activity
       }
       FileUpdater.saveInFile(CurrentToDos, this);
       adapter.notifyDataSetChanged();
@@ -88,13 +112,16 @@ public class MainActivity extends ActionBarActivity {
     	super.onStart();
     	FileUpdater = new UpdateToDoLists();
     	ToDoListView = (ListView)findViewById(R.id.ToDoListView);
+    	int count;
+    	count = Checked.getNumberChecked(CurrentToDos);
     	if (CurrentToDos != null)//checks to see basically if there are any items in currentToDos
         	CurrentToDos = FileUpdater.loadFromFile(CurrentToDos,this);//then loads from file to populate
+    	CheckedText = (TextView)findViewById(R.id.NumberOfChecked);
+    	CheckedText.setText("Number of checked items is: " + String.valueOf(count));
     	adapter = new ToDoItemAdapter(this,CurrentToDos);//creates a custom adapter for CurrentToDos
+    	ToDoListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
     	ToDoListView.setAdapter(adapter);//sets the adapter to reflect CurrentToDos
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

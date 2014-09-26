@@ -1,5 +1,6 @@
 package com.CMPUT301.makepeacassgn1;
-/* This custom adapter was not created by me, I found it on an excellent tutorial here:
+/* This custom adapter was not created by me, 
+I found it on an excellent tutorial here:
  * http://windrealm.org/tutorials/android/listview-with-checkboxes-without-listactivity.php
  * on 09/17/14. My only hand at this was to adapt the code to fit my variable names and 
  * custom class ToDoItem.
@@ -18,7 +19,7 @@ public class ToDoItemAdapter extends ArrayAdapter<ToDoItem> {
 	private LayoutInflater inflater;
 	
 	public ToDoItemAdapter(Context context, List<ToDoItem> currentToDos ){
-		super( context, R.layout.blandlayout, R.id.ItemText, currentToDos );
+		super( context, R.layout.one_row, R.id.ItemText, currentToDos );
 		inflater = LayoutInflater.from(context) ;  
 	}
 	
@@ -41,7 +42,7 @@ public class ToDoItemAdapter extends ArrayAdapter<ToDoItem> {
 	        // call findViewById() later when we reuse the row.  
 	        convertView.setTag( new CheckBoxItemView(textView,checkBox) );  
 	        
-	     // If CheckBox is toggled, update the planet it is tagged with.  
+	     // If CheckBox is toggled, update the item it is tagged with.  
 	        checkBox.setOnClickListener( new View.OnClickListener() {  
 	          public void onClick(View v) {  
 	            CheckBox cb = (CheckBox) v ;  
@@ -56,11 +57,11 @@ public class ToDoItemAdapter extends ArrayAdapter<ToDoItem> {
 	          checkBox = viewHolder.getCheckBox() ;  
 	          textView = viewHolder.getTextView() ;  
 	        }
-	   // Tag the CheckBox with the Planet it is displaying, so that we can  
-	      // access the planet in onClick() when the CheckBox is toggled.  
+	   // Tag the CheckBox with the item it is displaying, so that we can  
+	      // access the item in onClick() when the CheckBox is toggled.  
 	      checkBox.setTag( item);   
 	        
-	      // Display planet data  
+	      // Display data  
 	      checkBox.setChecked( item.isChecked() );  
 	      textView.setText( item.GetName() );        
 	        
