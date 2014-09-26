@@ -11,19 +11,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
 public class MainActivity extends ActionBarActivity {
-	EditText ItemAdder;
-	List<ToDoItem> ArchiveToDos = new ArrayList<ToDoItem>();
-	List<ToDoItem> CurrentToDos = new ArrayList<ToDoItem>();
-	ArrayAdapter<ToDoList> listAdapter;
-	ListView ToDoListView;
-	ToDoItemAdapter adapter;//creates a new item adapter to use for displaying list items
-	UpdateToDoLists FileUpdater= new UpdateToDoLists();
+	private EditText ItemAdder;
+	private List<ToDoItem> ArchiveToDos = new ArrayList<ToDoItem>();
+	private List<ToDoItem> CurrentToDos = new ArrayList<ToDoItem>();
+	private ListView ToDoListView;
+	private ToDoItemAdapter adapter;//creates a new item adapter to use for displaying list items
+	private UpdateToDoLists FileUpdater= new UpdateToDoLists();
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +70,6 @@ public class MainActivity extends ActionBarActivity {
     public boolean onContextItemSelected(MenuItem item) {
       AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
       int menuItemIndex = item.getItemId();
-//      String[] menuItems = getResources().getStringArray(R.array.menu);
-//      String menuItemName = menuItems[menuItemIndex];
-//      String listItemName = CurrentToDos.get(info.position).GetName();
       ToDoItem current = CurrentToDos.get(info.position);
       if (menuItemIndex == 0){
     	  moveToArchive(current);
@@ -84,9 +79,6 @@ public class MainActivity extends ActionBarActivity {
       }
       FileUpdater.saveInFile(CurrentToDos, this);
       adapter.notifyDataSetChanged();
-      
-
-      
       return true;
     }
 

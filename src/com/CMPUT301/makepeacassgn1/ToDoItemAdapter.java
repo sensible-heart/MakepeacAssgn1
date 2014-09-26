@@ -66,6 +66,4 @@ public class ToDoItemAdapter extends ArrayAdapter<ToDoItem> {
 	        
 	      return convertView;
 	}
-//	public Object onRetainNonConfigurationInstance() {  
-//	    return item ;
 }
